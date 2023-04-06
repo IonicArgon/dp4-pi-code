@@ -2,13 +2,14 @@ import serial
 import time
 
 class GPS:
-    def __init__(self, p_port, p_baudrate):
+    def __init__(self, p_port, p_baudrate, p_default_lat_long):
         # setup variables
         self.__m_port = p_port
         self.__m_baudrate = p_baudrate
         self.__m_serial = serial.Serial(self.__m_port, self.__m_baudrate)
         self.__m_rx_buffer = ''
         self.__m_lat_long = (0, 0)
+        self.__m_default_lat_long = p_default_lat_long
 
         # setup serial
         self.__m_serial.flushInput()
@@ -31,6 +32,8 @@ class GPS:
                 
                 if ",,,,,,,," in self.__m_rx_buffer.decode():
                     print('No GPS lock or antenna is not connected.')
+                    print('Using default lat/long')
+                    self.__m_lat_long = self.__m_default_lat_long
                     return -1
                 
                 lat_deg = gps_data[:2]
