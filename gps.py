@@ -24,9 +24,15 @@ class GPS:
         
         if self.__m_rx_buffer != '':
             if p_ack not in self.__m_rx_buffer.decode():
+                print(f'An error occured executing command {p_command}')
                 return -1
-            else:
-                gps_data = str(self.__m_rx_buffer.decode())[13:]
+            elif '+CGPSINFO: ' in self.__m_rx_buffer.decode():
+                gps_data = str(self.__m_rx_buffer.decode())
+                
+                if ",,,,,,,," in self.__m_rx_buffer.decode():
+                    print('No GPS lock or antenna is not connected.')
+                    return -1
+                
                 lat_deg = gps_data[:2]
                 lat_min = gps_data[2:11]
                 lat_dir = gps_data[12]
@@ -36,14 +42,16 @@ class GPS:
                 long_dir = gps_data[27]
 
                 lat = float(lat_deg) + (float(lat_min) / 60)
-                long = float(long_deg) + (float(long_min) / 60)
+                lon = float(long_deg) + (float(long_min) / 60)
 
                 if lat_dir == 'S':
                     lat = -lat
                 if long_dir == 'W':
-                    long = -long
+                    lon = -lon
 
-                self.__m_lat_long = (lat, long)
+                self.__m_lat_long = (lat, lon)
+                return 1
+            else:
                 return 1
         else:
             return -1

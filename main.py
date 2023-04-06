@@ -13,11 +13,23 @@ api = API(
 )
 
 if __name__ == '__main__':
-    gps.send_AT('AT+CGPS=1,1', 'OK', 1)
+    print("configure gps")
+    status = gps.send_AT('AT+CGPS=0', 'OK', 1)
+    print(status)
     time.sleep(2)
-    gps.send_AT('AT+CGPSINFO', '+CGPSINFO: ', 1)
-    location = gps.get_lat_long()
-    print(location)
-    api.set_lat_long(location)
-    api.scrape()
-    print(api.get_temp_time())
+    status = gps.send_AT('AT+CGPS=1,1', 'OK', 1)
+    print(status)
+    status = gps.send_AT('AT+CGPS?', 'OK', 1)
+    print(status)
+    time.sleep(2)
+    
+    while True:
+        status = gps.send_AT('AT+CGPSINFO', '+CGPSINFO: ', 1)
+        print(status)
+        location = gps.get_lat_long()
+        print(location)
+        
+        api.set_lat_long(location)
+        api.scrape()
+        print(api.get_temp_time())
+        time.sleep(1)
