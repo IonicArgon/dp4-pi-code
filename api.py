@@ -24,7 +24,7 @@ class API:
             self.__m_temperature = main['feels_like']
 
             model = np.poly1d(np.polyfit(self.__m_dataset[0], self.__m_dataset[1], 2))
-            self.__m_temperature = round(model(self.__m_temperature))
+            self.__m_time = round(model(self.__m_temperature))
             return 1
         else:
             print("Error in the HTTP request")
