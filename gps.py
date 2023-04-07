@@ -28,18 +28,18 @@ class GPS:
                 print(f'An error occured executing command {p_command}')
                 return -1
             elif '+CGPSINFO: ' in self.__m_rx_buffer.decode():
-                gps_data = str(self.__m_rx_buffer.decode())
+                gps_data = str(self.__m_rx_buffer.decode())[13:]
                 
                 if ",,,,,,,," in self.__m_rx_buffer.decode():
                     print('No GPS lock or antenna is not connected.')
-                    print('Using default lat/long')
+                    print('Using default lat/long.')
                     self.__m_lat_long = self.__m_default_lat_long
                     return -1
                 
                 lat_deg = gps_data[:2]
                 lat_min = gps_data[2:11]
                 lat_dir = gps_data[12]
-
+                
                 long_deg = gps_data[14:17]
                 long_min = gps_data[17:26]
                 long_dir = gps_data[27]
