@@ -20,7 +20,7 @@ api = API(
 app = MainWindow()
 
 if __name__ == '__main__':
-    window_thread = threading.Thread(target=app.run)
+    window_thread = threading.Thread(target=app.mainloop)
     print("configure gps")
     status = gps.send_AT('AT+CGPS=0', 'OK', 1)
     status = gps.send_AT('AT+CGPS=1,1', 'OK', 1)
