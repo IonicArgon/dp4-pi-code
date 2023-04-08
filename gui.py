@@ -32,6 +32,7 @@ class TimerPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.total_time = 0
+        self.set_time = 0
 
         self.label = tk.Label(self, text="timer page", font=LARGER_FONT)
         self.label.pack(pady=10, padx=10)
@@ -59,6 +60,10 @@ class TimerPage(tk.Frame):
         self.reset_button = tk.Button(self.button_frame, text="Reset", command=self.reset_timer)
         self.reset_button.pack(side="left", padx=10)
 
+        # button to skip to 1 minute
+        self.skip_button = tk.Button(self, text="Skip to 1 minute", command=lambda: self.set_timer(1))
+        self.skip_button.pack(pady=10, padx=10)
+
         # thread for timer
         self.timer_thread_on = False
         self.thread = threading.Thread(target=self.timer)
@@ -69,7 +74,8 @@ class TimerPage(tk.Frame):
         self.thread.join()
 
     def set_timer(self, p_minutes):
-        self.total_time = p_minutes * 60
+        self.set_time = p_minutes * 60
+        self.total_time = self.set_time
         self.update_timer_labels()
         self.controller.update()
 
@@ -85,7 +91,7 @@ class TimerPage(tk.Frame):
         self.controller.update()
 
     def reset_timer(self):
-        self.total_time = 0
+        self.total_time = self.set_time
         self.update_timer_labels()
         self.controller.update()
 
