@@ -20,7 +20,6 @@ api = API(
 app = MainWindow()
 
 if __name__ == '__main__':
-    window_thread = threading.Thread(target=app.mainloop)
     print("configure gps")
     status = gps.send_AT('AT+CGPS=0', 'OK', 1)
     status = gps.send_AT('AT+CGPS=1,1', 'OK', 1)
@@ -33,8 +32,7 @@ if __name__ == '__main__':
     
     api.set_lat_long(location)
     api.scrape()
-    temp, time = api.get_temp_time()
-    print(temp, time)
-    app.set_timer(time)
-    
-    time.sleep(1)
+    temp, _time = api.get_temp_time()
+    print(temp, _time)
+    app.set_timer(_time)
+    app.mainloop()
