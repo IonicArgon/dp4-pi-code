@@ -1,6 +1,8 @@
 from gps import GPS
 from api import API
+from gui import MainWindow
 import time
+import threading
 
 gps = GPS('/dev/ttyS0', 
           115200,
@@ -15,19 +17,24 @@ api = API(
     ]
 )
 
+app = MainWindow()
+
 if __name__ == '__main__':
+    window_thread = threading.Thread(target=app.run)
     print("configure gps")
     status = gps.send_AT('AT+CGPS=0', 'OK', 1)
     status = gps.send_AT('AT+CGPS=1,1', 'OK', 1)
     status = gps.send_AT('AT+CGPS?', 'OK', 1)
     time.sleep(2)
+
+    status = gps.send_AT('AT+CGPSINFO', '+CGPSINFO: ', 1)
+    location = gps.get_lat_long()
+    print(location)
     
-    while True:
-        status = gps.send_AT('AT+CGPSINFO', '+CGPSINFO: ', 1)
-        location = gps.get_lat_long()
-        print(location)
-        
-        api.set_lat_long(location)
-        api.scrape()
-        print(api.get_temp_time())
-        time.sleep(1)
+    api.set_lat_long(location)
+    api.scrape()
+    temp, time = api.get_temp_time()
+    print(temp, time)
+    app.set_timer(time)
+    
+    time.sleep(1)
