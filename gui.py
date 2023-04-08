@@ -11,7 +11,7 @@ class MainWindow(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         tk.Tk.wm_title(self, "Atmospheria")
-        tk.Tk.wm_geometry(self, "600x600")
+        tk.Tk.wm_geometry(self, "200x200")
         tk.Tk.wm_resizable(self, False, False)
 
         container = tk.Frame(self)
@@ -61,7 +61,7 @@ class TimerPage(tk.Frame):
         self.reset_button.pack(side="left", padx=10)
 
         # button to skip to 1 minute
-        self.skip_button = tk.Button(self, text="Skip to 1 minute", command=lambda: self.set_timer(1))
+        self.skip_button = tk.Button(self, text="Skip to 1 minute", command=lambda: self.__skip_to_one_minute())
         self.skip_button.pack(pady=10, padx=10)
 
         # thread for timer
@@ -72,6 +72,9 @@ class TimerPage(tk.Frame):
 
     def __del__(self):
         self.thread.join()
+
+    def __skip_to_one_minute(self):
+        self.total_time = 60
 
     def set_timer(self, p_minutes):
         self.set_time = p_minutes * 60
