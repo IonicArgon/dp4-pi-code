@@ -7,36 +7,45 @@ LARGE_FONT = ("Comic Sans MS", 18)
 MEDIUM_FONT = ("Comic Sans MS", 14)
 SMALL_FONT = ("Comic Sans MS", 10)
 
+# these classes are for the rendering of the GUI
+# logic written by Marco Tan
 class MainWindow(tk.Tk):
     def __init__(self, *args, **kwargs):
+        # initialize the main window with a bunch of tkinter methods
         tk.Tk.__init__(self, *args, **kwargs)
         tk.Tk.wm_title(self, "Atmospheria")
         tk.Tk.wm_geometry(self, "200x200")
         tk.Tk.wm_resizable(self, False, False)
 
+        # create a container to hold all the frames
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
+        # create a dictionary to hold all the frames (designed for adding more pages in the future)
         self.frames = {}
         self.frames["TimerPage"] = TimerPage(container, self)
         self.frames["TimerPage"].grid(row=0, column=0, sticky="nsew")
 
+    # passing the amount of time to the timer page
     def set_timer(self, p_time):
         self.frames["TimerPage"].set_timer(p_time)
 
-
+# this class is for the timer page
 class TimerPage(tk.Frame):
     def __init__(self, parent, controller):
+        # initializing variables we need and the tkinter frame
         tk.Frame.__init__(self, parent)
         self.controller = controller
         self.total_time = 0
         self.set_time = 0
 
+        ### everything below here is for creating the GUI ###
         self.label = tk.Label(self, text="timer page", font=LARGER_FONT)
         self.label.pack(pady=10, padx=10)
 
+        # creating the timer with minutes and seconds side by side
         self.timer_frame = tk.Frame(self)
         self.timer_frame.pack(pady=10, padx=10)
 
@@ -64,15 +73,17 @@ class TimerPage(tk.Frame):
         self.skip_button = tk.Button(self, text="Skip to 1 minute", command=lambda: self.__skip_to_one_minute())
         self.skip_button.pack(pady=10, padx=10)
 
-        # thread for timer
+        # thread for timer because we do not want the GUI to freeze
         self.timer_thread_on = False
         self.thread = threading.Thread(target=self.timer)
         self.thread.daemon = True
         self.thread.start()
 
     def __del__(self):
-        self.thread.join()
+        self.thread.join() # join the thread when the object is deleted to prevent errors
 
+    # this method is called when the skip button is pressed
+    # used a dunder to name mangle (because we dont want this called outside of this class)
     def __skip_to_one_minute(self):
         self.total_time = 60
 
@@ -98,6 +109,7 @@ class TimerPage(tk.Frame):
         self.update_timer_labels()
         self.controller.update()
 
+    # this method is called to update the labels
     def update_timer_labels(self):
         minute_string = str(self.total_time // 60)
         if len(minute_string) == 1:
@@ -111,11 +123,17 @@ class TimerPage(tk.Frame):
         self.seconds.set(second_string)
         self.controller.update()
 
+    # this is the method passed to the thread
     def timer(self):
         while True:
             if self.timer_thread_on and self.total_time > 0:
                 self.total_time -= 1
                 self.update_timer_labels()
+                time.sleep(1)
+            elif self.timer_thread_on and self.total_time <= 0:
+                self.stop_start_timer()
+                self.label["text"] = "Time's up!"
+                self.controller.update()
                 time.sleep(1)
             else:
                 time.sleep(0.1)
