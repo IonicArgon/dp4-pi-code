@@ -16,6 +16,10 @@ class GPS:
         self.__m_serial.flushInput()
 
     # send an AT command to the GPS
+    # function takes in 3 arguments: the AT command, the acknowledgement string, and the timeout
+    # the function returns -1 if there is an error or 1 if there is no error
+    # it processes GPS data from the SiM7600G-H 4G GSM/GPS hat
+    # documentation for the module was found here: https://www.waveshare.com/w/upload/6/6d/SIM7600E-H-4G-HAT-Manual-EN.pdf
     def send_AT(self, p_command, p_ack, p_timeout):
         # clear the data buffer
         self.__m_rx_buffer = ''
