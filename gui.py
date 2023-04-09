@@ -70,11 +70,11 @@ class TimerPage(tk.Frame):
         self.reset_button.pack(side="left", padx=10)
 
         # button to skip to 1 minute
-        self.skip_button = tk.Button(self, text="Skip to 1 minute", command=(lambda: self.__skip_to_one_minute()))
+        self.skip_button = tk.Button(self, text="Skip to 1 minute", command=(lambda: self.__skip_to_one_minute))
         self.skip_button.pack(pady=10, padx=10)
 
         # button to skip to halfway
-        self.skip_button_2 = tk.Button(self, text="Skip to halfway", command=(lambda: self.__skip_to_halfway()))
+        self.skip_button_2 = tk.Button(self, text="Skip to halfway", command=(lambda: self.__skip_to_halfway))
         self.skip_button_2.pack(pady=10, padx=10)
 
         # thread for timer because we do not want the GUI to freeze
@@ -90,7 +90,7 @@ class TimerPage(tk.Frame):
         self.total_time = 60
 
     def __skip_to_halfway(self):
-        self.total_time = 1140
+        self.total_time = self.set_time // 2
 
     def set_timer(self, p_minutes):
         self.set_time = p_minutes * 60
