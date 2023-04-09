@@ -133,7 +133,7 @@ class TimerPage(tk.Frame):
     # this is the method passed to the thread
     def timer(self):
         while True:
-            if self.timer_thread_on and self.total_time > 0:
+            if self.timer_thread_on and self.total_time > (self.set_time // 2):
                 self.label["text"] = "timer page"
                 self.total_time -= 1
                 self.update_timer_labels()
