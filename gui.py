@@ -138,7 +138,7 @@ class TimerPage(tk.Frame):
                 self.total_time -= 1
                 self.update_timer_labels()
                 time.sleep(1)
-            elif self.timer_thread_on and (self.set_time // 2) > self.total_time > 0:
+            elif self.timer_thread_on and (self.set_time // 2) >= self.total_time > 0:
                 self.label["text"] = "Half way there!"
                 self.total_time -= 1
                 self.update_timer_labels()
