@@ -92,7 +92,9 @@ class TimerPage(tk.Frame):
         self.total_time = 60
 
     def __skip_to_halfway(self):
-        self.total_time = self.set_time // 2
+        half_time = round(self.set_time / 2)
+        print(half_time)
+        self.total_time = half_time
 
     def set_timer(self, p_minutes):
         self.set_time = p_minutes * 60
