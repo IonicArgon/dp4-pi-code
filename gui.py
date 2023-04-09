@@ -74,8 +74,8 @@ class TimerPage(tk.Frame):
         self.skip_button.pack(pady=10, padx=10)
 
         # button to skip to halfway
-        self.skip_button = tk.Button(self, text="Skip to halfway", command=lambda: self.__skip_to_halfway())
-        self.skip_button.pack(pady=10, padx=10)
+        self.skip_button_2 = tk.Button(self, text="Skip to halfway", command=lambda: self.__skip_to_halfway())
+        self.skip_button_2.pack(pady=10, padx=10)
 
         # thread for timer because we do not want the GUI to freeze
         self.timer_thread_on = False
