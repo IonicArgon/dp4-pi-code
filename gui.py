@@ -69,8 +69,8 @@ class TimerPage(tk.Frame):
         self.reset_button = tk.Button(self.button_frame, text="Reset", command=self.reset_timer)
         self.reset_button.pack(side="left", padx=10)
 
-        # button to skip to 1 minute
-        self.skip_button = tk.Button(self, text="Skip to 1 minute", command=self.__skip_to_one_minute)
+        # button to skip to like 10 seconds
+        self.skip_button = tk.Button(self, text="Skip to 10 seconds", command=self.__skip_to_ten_seconds)
         self.skip_button.pack(pady=10, padx=10)
 
         # button to skip to halfway
@@ -86,7 +86,7 @@ class TimerPage(tk.Frame):
     def __del__(self):
         self.thread.join() # join the thread when the object is deleted to prevent errors
 
-    def __skip_to_one_minute(self):
+    def __skip_to_ten_seconds(self):
         self.total_time = 60
 
     def __skip_to_halfway(self):
