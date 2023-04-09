@@ -14,7 +14,7 @@ class MainWindow(tk.Tk):
         # initialize the main window with a bunch of tkinter methods
         tk.Tk.__init__(self, *args, **kwargs)
         tk.Tk.wm_title(self, "Atmospheria")
-        tk.Tk.wm_geometry(self, "250x250")
+        tk.Tk.wm_geometry(self, "250x300")
         tk.Tk.wm_resizable(self, False, False)
 
         # create a container to hold all the frames
@@ -138,7 +138,7 @@ class TimerPage(tk.Frame):
                 self.total_time -= 1
                 self.update_timer_labels()
                 time.sleep(1)
-            elif self.timer_thread_on and self.total_time < (self.set_time // 2):
+            elif self.timer_thread_on and (self.set_time // 2) > self.total_time > 0:
                 self.label["text"] = "Half way there!"
                 self.total_time -= 1
                 self.update_timer_labels()
