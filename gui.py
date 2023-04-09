@@ -87,7 +87,7 @@ class TimerPage(tk.Frame):
         self.thread.join() # join the thread when the object is deleted to prevent errors
 
     def __skip_to_ten_seconds(self):
-        self.total_time = 60
+        self.total_time = 10
 
     def __skip_to_halfway(self):
         self.total_time = self.set_time // 2
